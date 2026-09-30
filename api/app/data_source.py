@@ -55,23 +55,14 @@ def _try_load_real_backend():
 
     try:
         sys.path.insert(0, str(REPO_ROOT))
-        from model import predict as predict_module  # type: ignore
+        from model.predict import CassandraModel  # type: ignore
 
         import pandas as pd
 
         features_df = pd.read_parquet(FEATURES_PATH)
 
-        if hasattr(predict_module, "score_ranked_terminals"):
-            results = predict_module.score_ranked_terminals(features_df)
-        elif hasattr(predict_module, "predict"):
-            results = predict_module.predict(features_df)
-        else:
-            logger.warning(
-                "model/predict.py exists but exposes no score_ranked_terminals()/predict() "
-                "function — using mock data."
-            )
-            _real_backend_available = False
-            return None
+        model = CassandraModel.load("A")
+        results = model.score(features_df)
 
         # normalize to list of dicts
         if hasattr(results, "to_dict"):
