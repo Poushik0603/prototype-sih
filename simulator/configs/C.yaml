@@ -1,0 +1,49 @@
+# Config C — "fan-out structuring" mule pattern. Circularity-protocol TEST config #2.
+# Rationale: diverges from A along a THIRD axis vs. B — instead of one linear chain per victim,
+# C fans a single victim's funds out to many mule accounts in parallel (wide, shallow graph)
+# which each cash out small amounts at RANDOM terminals across the city. This is the classic
+# "smurfing" structuring pattern. Topologically this is the opposite shape from A (deep/narrow)
+# and B (deep/narrow but slow) — C is shallow/wide — so a model over-fit to chain-depth features
+# from A/B should specifically struggle on C, which is the point of testing against it.
+seed: 44
+
+calibration:
+  calibration_manifest: ../data/calibration/manifest.json
+  region: "placeholder-india-city"
+
+mule_network:
+  # Shallow: most funds reach a cash-out mule within 1 hop (fan-out happens at hop 1).
+  hop_count_distribution: { type: poisson, lambda: 1 }
+  # Fast fan-out, moderately tight timing (similar order of magnitude to A but not identical).
+  delay_between_hops_hours: { type: lognormal, mu: 1.1, sigma: 1.0 }
+  # Each mule withdraws a small structured amount, same sub-threshold flavor as B but achieved
+  # via WIDE account fan-out rather than B's repeated-withdrawal-per-account structuring.
+  cash_out_pattern: "structured_below_threshold"
+  # Terminals picked uniformly at random across the whole city (no spatial clustering at all) —
+  # a totally different heuristic from A (nearest) and B (hotspot-avoidant).
+  terminal_choice: "random_in_city"
+  # Wide fan-out is the defining feature of C.
+  fan_out_accounts_per_complaint: { type: uniform, low: 6, high: 14 }
+
+benign_background:
+  daily_txn_volume_per_terminal: { type: poisson, lambda: 8 }  # see A.yaml comment
+  amount_distribution: { type: lognormal, mu: 6.0, sigma: 1.0 }
+
+label_noise:
+  # Many small mule accounts per ring -> easier for some to fly under victim/bank detection
+  # entirely -> even higher false-negative rate than B.
+  false_negative_rate: 0.10
+  # Wide fan-out also raises the chance an innocent account gets swept up by mistake.
+  false_positive_rate: 0.04
+  label_delay_days: { type: uniform, low: 0, high: 10 }
+
+# Another overlapping-but-different window: starts with A, ends earlier than B, so all three
+# configs' time ranges differ pairwise while still sharing common days for comparability.
+time_range:
+  start: "2026-01-05"
+  end: "2026-01-19"
+
+scale:
+  num_benign_accounts: 900
+  num_complaints: 90       # fewer complaints, but each ring is much wider (6-14 mules)
+  rules_version: "sim-rules-v1.0-C"
