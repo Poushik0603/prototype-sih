@@ -1,0 +1,6 @@
+geography,year,cybercrime_cases,source,notes
+Karnataka,2023,21889,"NCRB Crime in India report figures, reported by Deccan Herald / TheNewsMinute, 2025","State-level registered cybercrime cases"
+Karnataka,2024,21993,"NCRB Crime in India report figures, reported by Deccan Herald / TheNewsMinute, 2025","Cybercrime rate 32.2 per lakh population; charge-sheeting rate 22.1%"
+Bengaluru_city,2022,9940,"Bengaluru City Police data, reported by Business Standard, 2024","Cases taken up by Bengaluru city police"
+Bengaluru_city,2023,17631,"NCRB / Bengaluru City Police data, reported by Deccan Herald / Business Standard","Also cited as 17623 in Business Standard's police-data figure; minor variance between NCRB and police-data figures across sources. Only 1271 solved vs 2431 solved in 2022"
+Bengaluru_city,2024,17561,"NCRB Crime in India report, reported by Deccan Herald / TheNewsMinute, 2025","Highest among metro cities; cybercrime rate 206.6 per lakh population; 17310 of these were computer-offence cases, 16657 under IT Act Sec 66D (cheating by personation)"

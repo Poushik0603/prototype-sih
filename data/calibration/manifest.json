@@ -1,0 +1,62 @@
+{
+  "generated_by": "scripts/fetch_calibration.py + scripts/build_terminals.py (Data agent)",
+  "files": [
+    {
+      "filename": "data/raw/osm_atms_bengaluru.json",
+      "sha256": "9e0c5b665edbab7afc5e76b499c83eca66debfe34fb99c3801379369a97a5267",
+      "size_bytes": 329613,
+      "source_url": "https://overpass-api.de/api/interpreter",
+      "source_query": "[out:json][timeout:180]; (node[\"amenity\"=\"atm\"](12.83,77.45,13.14,77.78);); out body;",
+      "access_timestamp_utc": "2026-10-01T03:09:00Z",
+      "description": "Raw, unmodified Overpass API JSON response: 1150 amenity=atm nodes within a bounding box covering greater Bengaluru, Karnataka, India."
+    },
+    {
+      "filename": "data/raw/terminals_full.parquet",
+      "sha256": "52095f0f7a01e90a25a50949f327fe37c205d0133c67bc3b08dda65888f43413",
+      "size_bytes": 45259,
+      "source_url": "derived from data/raw/osm_atms_bengaluru.json",
+      "access_timestamp_utc": "2026-10-01T03:09:00Z",
+      "description": "Terminals table (1150 rows) built from the raw OSM ATM nodes: real lat/lon/h3_cell (H3 res 9), synthetic bank name and install_date columns per SCHEMA_CONTRACT.md. Identical content also saved to data/simulated/fixture/terminals.parquet for early Model/API integration."
+    },
+    {
+      "filename": "data/calibration/ncrp_state_totals.csv",
+      "sha256": null,
+      "size_bytes": null,
+      "source_url": "https://www.isignal.in/data-viz/dataviz-how-indias-cyber-crime-incidence-is-rising-972933 (IndiaSpend, citing Govt of India Rajya Sabha statement / MHA-I4C NCRP data)",
+      "access_timestamp_utc": "2026-10-01T03:00:00Z",
+      "description": "Hand-transcribed 2024 state-wise NCRP cybercrime complaint totals for top 5 reporting states (Maharashtra, UP, Karnataka, Gujarat, Delhi), from a cited news report of official Rajya Sabha figures. Not a raw downloadable dataset -- no checksum applicable; see README for caveats."
+    },
+    {
+      "filename": "data/calibration/ncrp_national_totals.csv",
+      "sha256": null,
+      "size_bytes": null,
+      "source_url": "https://www.isignal.in/data-viz/dataviz-how-indias-cyber-crime-incidence-is-rising-972933 (IndiaSpend, citing Govt of India Rajya Sabha statement / MHA-I4C NCRP data)",
+      "access_timestamp_utc": "2026-10-01T03:00:00Z",
+      "description": "Hand-transcribed national NCRP cybercrime incident totals for 2021, 2024, and H1-2025, from cited Rajya Sabha figures."
+    },
+    {
+      "filename": "data/calibration/ncrp_financial_loss.csv",
+      "sha256": null,
+      "size_bytes": null,
+      "source_url": "https://www.isignal.in/data-viz/dataviz-how-indias-cyber-crime-incidence-is-rising-972933 (IndiaSpend, citing NCRP/I4C via Rajya Sabha statement); additional 2023/2024 loss figures from news coverage citing MHA/I4C",
+      "access_timestamp_utc": "2026-10-01T03:00:00Z",
+      "description": "Hand-transcribed NCRP/I4C reported financial loss figures (total losses, amount under lien, amount returned) as of Feb 28 2025, plus annual loss totals for 2023 and 2024."
+    },
+    {
+      "filename": "data/calibration/bengaluru_karnataka_cybercrime.csv",
+      "sha256": null,
+      "size_bytes": null,
+      "source_url": "https://www.deccanherald.com/india/karnataka/bengaluru/bengaluru-logged-17561-cybercrimes-in-2024-over-50-of-top-cities-ncrb-3993718 ; https://www.business-standard.com/india-news/cybercrime-cases-shoot-up-in-bengaluru-in-2023-detection-low-police-data-124010400649_1.html (both citing NCRB Crime in India report / Bengaluru City Police data)",
+      "access_timestamp_utc": "2026-10-01T03:00:00Z",
+      "description": "Hand-transcribed Karnataka state and Bengaluru city cybercrime case counts for 2022-2024 from NCRB-sourced news coverage. Chosen because Bengaluru is our terminal geography (see README)."
+    },
+    {
+      "filename": "data/calibration/rbi_atm_counts.csv",
+      "sha256": null,
+      "size_bytes": null,
+      "source_url": "https://www.policycircle.org/economy/atm-count-falls-in-india-rbi/ (citing RBI data / RBI Handbook of Statistics on the Indian Economy 2023-24); onsite/offsite figures also reported at https://www.business-standard.com/amp/industry/banking/atms-slide-into-the-shadows-as-digital-transactions-take-centerstage-125051301134_1.html",
+      "access_timestamp_utc": "2026-10-01T03:00:00Z",
+      "description": "Hand-transcribed RBI ATM deployment statistics: total ATM counts (2023-2024), onsite/offsite breakdown (FY23-FY24), white label ATM counts, micro-ATM counts, ATMs per 100k population, and bank branch counts. Primary source cited is RBI's Handbook of Statistics on the Indian Economy 2023-24."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+metric,fy_or_year,value,source,notes
+total_atms_india,2023,219000,"RBI data, reported by PolicyCircle, 2025","Approximate: 2.19 lakh, peak year"
+total_atms_india,2024,215000,"RBI data, reported by PolicyCircle, 2025","Approximate: 2.15 lakh, declined from 2023 peak"
+onsite_atms,FY23,78777,"RBI Handbook of Statistics on the Indian Economy 2023-24, reported by Business Standard, 2025",
+onsite_atms,FY24,77033,"RBI Handbook of Statistics on the Indian Economy 2023-24, reported by Business Standard, 2025",
+offsite_atms,FY23,59646,"RBI Handbook of Statistics on the Indian Economy 2023-24, reported by Business Standard, 2025",
+offsite_atms,FY24,57661,"RBI Handbook of Statistics on the Indian Economy 2023-24, reported by Business Standard, 2025",
+white_label_atms,2023,35791,"RBI data, reported by Business Standard / PolicyCircle, 2025",
+white_label_atms,2024,34602,"RBI data, reported by Business Standard / PolicyCircle, 2025","Also cited elsewhere as 36216 vs 34602 depending on reporting period -- minor cross-source variance, both from RBI-sourced news coverage"
+micro_atms,2022-09,1240000,"RBI data, reported by PolicyCircle, 2025","As of September 2022; 1.24 million micro-ATM devices"
+micro_atms,2024,1460000,"RBI data, reported by PolicyCircle, 2025","~1.46 million, 18% surge from Sept 2022 figure"
+atms_per_100k_population,2024,15,"RBI data, reported by PolicyCircle, 2025","Only 15 ATMs per 100000 people nationally; ~80% located in urban centres"
+bank_branches,FY21,130000,"RBI data, reported by PolicyCircle, 2025","Approximate: 1.30 lakh"
+bank_branches,FY25,142000,"RBI data, reported by PolicyCircle, 2025","Approximate: 1.42 lakh"

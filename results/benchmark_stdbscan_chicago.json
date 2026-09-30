@@ -1,0 +1,104 @@
+{
+  "benchmark": "st_dbscan_sanity_check",
+  "data_source": "REAL DATA \u2014 Chicago Data Portal, Crimes 2001-present (Socrata API)",
+  "is_real_data": true,
+  "label_note": "All metrics below are from REAL Chicago crime data, NOT simulated.",
+  "method": "DBSCAN with rescaled (space_km/eps_km, space_km/eps_km, time_hr/eps_hr) features, eps=1.0 -- approximates ST-DBSCAN space-AND-time neighborhoods.",
+  "parameters": {
+    "spatial_eps_km": 0.4,
+    "temporal_eps_hours": 6.0,
+    "min_samples": 5
+  },
+  "input": {
+    "n_points": 15000,
+    "date_range_start": "2026-08-29T23:00:00",
+    "date_range_end": "2026-09-26T00:00:00"
+  },
+  "results": {
+    "n_clusters": 84,
+    "n_noise_points": 14311,
+    "noise_fraction": 0.9541,
+    "n_clustered_points": 689,
+    "clustered_fraction": 0.0459,
+    "cluster_size_distribution": {
+      "min": 3.0,
+      "25%": 5.0,
+      "50%_median": 6.0,
+      "75%": 9.0,
+      "max": 29.0,
+      "mean": 8.2
+    },
+    "top_5_example_hotspots": [
+      {
+        "cluster_id": 29,
+        "size": 29,
+        "centroid_lat": 41.89012,
+        "centroid_lon": -87.6295,
+        "time_span_start": "2026-09-12T15:30:00",
+        "time_span_end": "2026-09-13T07:21:00",
+        "top_crime_types": {
+          "THEFT": 7,
+          "BURGLARY": 3,
+          "BATTERY": 3
+        },
+        "example_block_description": "STREET"
+      },
+      {
+        "cluster_id": 45,
+        "size": 26,
+        "centroid_lat": 41.80543,
+        "centroid_lon": -87.58552,
+        "time_span_start": "2026-09-08T23:00:00",
+        "time_span_end": "2026-09-09T10:53:00",
+        "top_crime_types": {
+          "CRIMINAL DAMAGE": 22,
+          "BATTERY": 1,
+          "ASSAULT": 1
+        },
+        "example_block_description": "PARKING LOT / GARAGE (NON RESIDENTIAL)"
+      },
+      {
+        "cluster_id": 14,
+        "size": 22,
+        "centroid_lat": 41.88438,
+        "centroid_lon": -87.62606,
+        "time_span_start": "2026-09-16T08:15:00",
+        "time_span_end": "2026-09-17T00:06:00",
+        "top_crime_types": {
+          "THEFT": 9,
+          "BATTERY": 4,
+          "PUBLIC PEACE VIOLATION": 2
+        },
+        "example_block_description": "STREET"
+      },
+      {
+        "cluster_id": 44,
+        "size": 22,
+        "centroid_lat": 41.88524,
+        "centroid_lon": -87.62636,
+        "time_span_start": "2026-09-09T10:30:00",
+        "time_span_end": "2026-09-09T22:47:00",
+        "top_crime_types": {
+          "THEFT": 13,
+          "BATTERY": 3,
+          "DECEPTIVE PRACTICE": 3
+        },
+        "example_block_description": "SIDEWALK"
+      },
+      {
+        "cluster_id": 59,
+        "size": 19,
+        "centroid_lat": 41.89174,
+        "centroid_lon": -87.62984,
+        "time_span_start": "2026-09-05T22:46:00",
+        "time_span_end": "2026-09-06T13:00:00",
+        "top_crime_types": {
+          "THEFT": 8,
+          "CRIMINAL DAMAGE": 3,
+          "MOTOR VEHICLE THEFT": 2
+        },
+        "example_block_description": "SIDEWALK"
+      }
+    ]
+  }
+}
