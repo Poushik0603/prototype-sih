@@ -1,0 +1,27 @@
+# Template only — Simulator agent should create simulator/configs/{A,B,C}.yaml from this shape.
+# Do not hand-wave values: document the rationale for each in a comment or in results.md.
+
+seed: 42
+calibration:
+  calibration_manifest: ../data/calibration/manifest.json
+  region: "<city/state chosen by Data agent>"
+
+mule_network:
+  hop_count_distribution: { type: poisson, lambda: 3 }
+  delay_between_hops_hours: { type: lognormal, mu: 1.5, sigma: 0.8 }
+  cash_out_pattern: "structured_below_threshold"   # or "single_large_withdrawal"
+  terminal_choice: "nearest_to_last_hop"           # or "random_in_city", "hotspot_avoidant"
+  fan_out_accounts_per_complaint: { type: uniform, low: 2, high: 8 }
+
+benign_background:
+  daily_txn_volume_per_terminal: { type: poisson, lambda: 40 }
+  amount_distribution: { type: lognormal, mu: 6.0, sigma: 1.0 }
+
+label_noise:
+  false_negative_rate: 0.05   # mule withdrawal not linked to a complaint in time
+  false_positive_rate: 0.02   # complaint misattributes an innocent account
+  label_delay_days: { type: uniform, low: 0, high: 14 }
+
+time_range:
+  start: "2026-01-01"
+  end: "2026-03-01"
