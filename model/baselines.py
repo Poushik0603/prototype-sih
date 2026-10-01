@@ -112,3 +112,51 @@ def lift_at_k(y_true: np.ndarray, scores: np.ndarray, k: int = 10) -> float:
     if base_rate == 0:
         return float("nan")
     return precision_at_k(y_true, scores, k) / base_rate
+
+
+def precision_at_k_per_window(df: pd.DataFrame, scores: np.ndarray, k: int = 10,
+                               window_col: str = "window_start", label_col: str = "label") -> dict:
+    """Precision@k computed PER WINDOW and averaged, not globally over the
+    whole flattened test table.
+
+    This matters a lot at this problem's scale: the real deployment ranks
+    terminals WITHIN one 2h window at a time (the officer-view API scores
+    one as-of window's ~1150 terminal candidates and returns a top-N ranked
+    list -- see model/predict.py:CassandraModel.score and
+    SCHEMA_CONTRACT.md's response shape, which has no window-spanning
+    notion of "top 10 overall"). A single flattened precision@10 across
+    hundreds of windows x 1150 terminals/window asks "are any of the 10
+    single highest-scored rows in the ENTIRE test table positive", which is
+    a near-impossible target when positives are spread across ~20 distinct
+    windows (one every window, not concentrated in 10 rows total) --
+    the metric that was actually requested is "when the officer asks ranks
+    terminals for a window, are the true mule-hit terminals near the top
+    of THAT window's list", which is precision@k averaged per window.
+
+    Returns {"precision_at_k_per_window": mean over windows with >=1 row,
+    "n_windows": count, "n_windows_with_positive": count of windows that
+    had >=1 true positive label at all (a window with zero positives can
+    only ever score precision=0, so we also report the metric restricted
+    to windows that actually had a positive, which is the more informative
+    "did we find the needle" number)}.
+    """
+    tmp = df[[window_col, label_col]].copy()
+    tmp["_score"] = scores
+    per_window = []
+    per_window_only_positive = []
+    for ws, g in tmp.groupby(window_col):
+        y = g[label_col].values
+        s = g["_score"].values
+        p = precision_at_k(y, s, k=k)
+        per_window.append(p)
+        if y.sum() > 0:
+            per_window_only_positive.append(p)
+    return {
+        "precision_at_k_per_window_mean": float(np.mean(per_window)) if per_window else 0.0,
+        "precision_at_k_per_window_mean_on_positive_windows": (
+            float(np.mean(per_window_only_positive)) if per_window_only_positive else 0.0
+        ),
+        "n_windows": len(per_window),
+        "n_windows_with_positive": len(per_window_only_positive),
+        "k": k,
+    }

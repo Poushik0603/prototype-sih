@@ -17,7 +17,10 @@ import pandas as pd
 import xgboost as xgb
 from sklearn.metrics import average_precision_score, roc_auc_score
 
-from baselines import past_hotspot_baseline, rule_only_baseline, precision_at_k, lift_at_k
+from baselines import (
+    past_hotspot_baseline, rule_only_baseline, precision_at_k, lift_at_k,
+    precision_at_k_per_window,
+)
 from features import load_raw_tables
 from train import get_feature_cols, load_features
 
@@ -123,9 +126,24 @@ def evaluate_config(train_config: str, test_config: str, label_noise_note: str |
     y = test["label"].values
 
     def metric_block(scores):
+        pw = precision_at_k_per_window(test, scores, k=10)
         block = {
-            "precision_at_10": precision_at_k(y, scores, k=10),
-            "lift_at_10": lift_at_k(y, scores, k=10),
+            # NOTE: this is a GLOBAL top-10 across the whole flattened test
+            # table (hundreds of windows x ~1150 terminals/window) -- with
+            # positives spread one-or-few-per-window across ~20+ windows,
+            # this is a near-impossible target and is NOT the metric the
+            # officer-view deployment cares about. Kept only for
+            # transparency/comparability; see precision_at_10_per_window_*
+            # for the metric that actually matches how predict.py is used
+            # (rank terminals WITHIN one as-of window).
+            "precision_at_10_global_flattened": precision_at_k(y, scores, k=10),
+            "lift_at_10_global_flattened": lift_at_k(y, scores, k=10),
+            "precision_at_10_per_window_mean": pw["precision_at_k_per_window_mean"],
+            "precision_at_10_per_window_mean_on_positive_windows": (
+                pw["precision_at_k_per_window_mean_on_positive_windows"]
+            ),
+            "n_windows": pw["n_windows"],
+            "n_windows_with_positive": pw["n_windows_with_positive"],
         }
         if y.sum() > 0:
             block["average_precision"] = float(average_precision_score(y, scores))
@@ -139,9 +157,12 @@ def evaluate_config(train_config: str, test_config: str, label_noise_note: str |
     baseline_metrics = metric_block(baseline_scores)
     rule_metrics = metric_block(rule_scores)
 
+    # headline comparison uses the PER-WINDOW precision@10 (the metric that
+    # matches real deployment usage), not the near-meaningless global-
+    # flattened version -- see metric_block's note above.
     beats_baseline = (
-        model_metrics["precision_at_10"] > baseline_metrics["precision_at_10"]
-        if model_metrics["precision_at_10"] is not None else False
+        model_metrics["precision_at_10_per_window_mean"]
+        > baseline_metrics["precision_at_10_per_window_mean"]
     )
 
     result = {
@@ -156,7 +177,8 @@ def evaluate_config(train_config: str, test_config: str, label_noise_note: str |
         "rule_only": rule_metrics,
         "beats_baseline": bool(beats_baseline),
         "beats_baseline_note": (
-            "model precision@10 > past-hotspot-frequency baseline precision@10 on this test set"
+            "model per-window precision@10 > past-hotspot-frequency baseline per-window "
+            "precision@10 on this test set"
             if beats_baseline else
             "MODEL DID NOT BEAT THE BASELINE on this test set -- reported honestly, not hidden."
         ),
@@ -190,8 +212,8 @@ def main():
         with open(out_path, "w") as f:
             json.dump(result, f, indent=2, default=str)
         print(f"[evaluate] wrote {out_path}")
-        print(f"  model precision@10={result['model']['precision_at_10']:.3f} "
-              f"baseline precision@10={result['baseline_past_hotspot_freq']['precision_at_10']:.3f} "
+        print(f"  model per-window P@10={result['model']['precision_at_10_per_window_mean']:.3f} "
+              f"baseline per-window P@10={result['baseline_past_hotspot_freq']['precision_at_10_per_window_mean']:.3f} "
               f"beats_baseline={result['beats_baseline']}")
 
 

@@ -1,0 +1,53 @@
+{
+  "trained_on_config": "A",
+  "tested_on_config": "B",
+  "label": "SIMULATED DATA (synthetic simulator output, NOT real-world transactions)",
+  "n_test_rows": 430100,
+  "n_positive_test_rows": 443,
+  "positive_rate_test": 0.0010299930248779353,
+  "model": {
+    "precision_at_10_global_flattened": 0.0,
+    "lift_at_10_global_flattened": 0.0,
+    "precision_at_10_per_window_mean": 0.00026737967914438503,
+    "precision_at_10_per_window_mean_on_positive_windows": 0.00048309178743961357,
+    "n_windows": 374,
+    "n_windows_with_positive": 207,
+    "average_precision": 0.0007706408213140196,
+    "roc_auc": 0.39062562692732417
+  },
+  "baseline_past_hotspot_freq": {
+    "precision_at_10_global_flattened": 0.0,
+    "lift_at_10_global_flattened": 0.0,
+    "precision_at_10_per_window_mean": 0.0005347593582887701,
+    "precision_at_10_per_window_mean_on_positive_windows": 0.0009661835748792271,
+    "n_windows": 374,
+    "n_windows_with_positive": 207,
+    "average_precision": 0.001098854048142268,
+    "roc_auc": 0.4916904634060794
+  },
+  "rule_only": {
+    "precision_at_10_global_flattened": 0.0,
+    "lift_at_10_global_flattened": 0.0,
+    "precision_at_10_per_window_mean": 0.0016042780748663102,
+    "precision_at_10_per_window_mean_on_positive_windows": 0.0028985507246376816,
+    "n_windows": 374,
+    "n_windows_with_positive": 207,
+    "average_precision": 0.0010921903141585076,
+    "roc_auc": 0.44567435704172464
+  },
+  "beats_baseline": false,
+  "beats_baseline_note": "MODEL DID NOT BEAT THE BASELINE on this test set -- reported honestly, not hidden.",
+  "lead_time": {
+    "computable": false,
+    "reason": "Feature table unit is (terminal, 2h window); exact withdrawal timestamp is not retained in the feature table, only window_start. Lead time is therefore bounded by the window width (<=2h from window_start to the actual mule withdrawal) but not point-estimable from this table alone. Would require re-joining raw transactions by (terminal_id, window) to get exact timestamps -- left as a follow-up, not computed here to avoid fabricating a precise number.",
+    "n_positive_test_windows": 443,
+    "window_width_hours": 2
+  },
+  "latency": {
+    "p50_ms": 0.6682999992335681,
+    "p95_ms": 0.7837950044631725,
+    "batch_size": 100,
+    "n_batches": 30,
+    "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- that is the API agent's benchmark."
+  }
+}
