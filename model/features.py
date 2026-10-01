@@ -390,21 +390,34 @@ def compute_graph_distance_feature(windows: pd.DataFrame, terminals: pd.DataFram
 
 def make_rolling_origin_splits(windows: pd.DataFrame) -> pd.Series:
     """Rolling-origin split by calendar time with a 7-day embargo between
-    train and test (and between train/val and test), per PROJECT_SPEC.md.
+    train and val (and between val and test), per PROJECT_SPEC.md.
 
-    Timeline layout (fractions of the full observed window_start range):
-      [-------- train 60% --------][--embargo 7d--][val 15%][--embargo 7d--][test up to 25%]
-    If the data range is too short to fit both embargoes + all three splits,
-    embargo is still enforced exactly (7 days) and split sizes shrink instead
-    -- correctness of the embargo is never compromised for coverage.
+    Timeline layout:
+      [-------- train --------][--embargo 7d--][val][--embargo 7d--][test]
+    Fractions (60% train / 15% val / 25% test) are applied to the time
+    REMAINING after both 7-day embargoes are reserved off the top, not to
+    the full span -- this guarantees a non-trivial test slice even on a
+    ~20-day span (2 x 7-day embargo would otherwise eat most of a
+    percent-of-total-span budget and starve "test" to zero, which is what
+    happened before this fix: config A's 20-day span produced train/val/
+    embargo but NO test rows at all). If even the embargo-only floor doesn't
+    fit (very short spans, e.g. config C's 13 days), embargo is still
+    enforced exactly (7 days each) and splits degrade gracefully -- some
+    configs may still end up with a zero-row test split on sufficiently
+    short ranges, which is reported honestly rather than shrinking the
+    embargo to force a non-empty split.
     """
     ws = np.sort(windows["window_start"].unique())
     t0, t1 = pd.Timestamp(ws[0]), pd.Timestamp(ws[-1])
     total = t1 - t0
 
-    train_end = t0 + total * 0.55
+    remaining = total - 2 * EMBARGO
+    if remaining <= pd.Timedelta(0):
+        remaining = pd.Timedelta(0)
+
+    train_end = t0 + remaining * 0.60
     val_start = train_end + EMBARGO
-    val_end = val_start + total * 0.15
+    val_end = val_start + remaining * 0.15
     test_start = val_end + EMBARGO
 
     tags = pd.Series(index=windows.index, dtype=object)
