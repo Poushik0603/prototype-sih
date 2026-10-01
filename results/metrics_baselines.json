@@ -1,0 +1,117 @@
+{
+  "label": "SIMULATED DATA (synthetic simulator output, NOT real-world transactions)",
+  "note": "Baseline-only summary assembled from results/metrics_config_{A,B,C}.json (produced by model/evaluate.py). 'past_hotspot_freq' = as-of historical label rate per terminal (THE baseline to beat per PROJECT_SPEC.md). 'rule_only' = heuristic mirroring the simulator's own terminal_choice rule per config (see model/baselines.py:rule_only_baseline / simulator/README.md). Headline metric is precision_at_10_per_window_mean (see evaluate.py for why the per-window version, not the global-flattened one, is the metric that matches actual deployment usage).",
+  "by_config": {
+    "A": {
+      "tested_on_config": "A",
+      "n_test_rows": 24150,
+      "n_positive_test_rows": 48,
+      "positive_rate_test": 0.001987577639751553,
+      "past_hotspot_freq_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows": 21,
+        "n_windows_with_positive": 19,
+        "average_precision": 0.0018802658867336135,
+        "roc_auc": 0.4861193227394684
+      },
+      "rule_only_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows": 21,
+        "n_windows_with_positive": 19,
+        "average_precision": 0.001863699860748194,
+        "roc_auc": 0.4559303515614196
+      },
+      "model_for_comparison": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows": 21,
+        "n_windows_with_positive": 19,
+        "average_precision": 0.002210150113148961,
+        "roc_auc": 0.5242541248305811
+      },
+      "model_beats_baseline": false
+    },
+    "B": {
+      "tested_on_config": "B",
+      "n_test_rows": 430100,
+      "n_positive_test_rows": 443,
+      "positive_rate_test": 0.0010299930248779353,
+      "past_hotspot_freq_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0005347593582887701,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0009661835748792271,
+        "n_windows": 374,
+        "n_windows_with_positive": 207,
+        "average_precision": 0.001098854048142268,
+        "roc_auc": 0.4916904634060794
+      },
+      "rule_only_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0016042780748663102,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0028985507246376816,
+        "n_windows": 374,
+        "n_windows_with_positive": 207,
+        "average_precision": 0.0010921903141585076,
+        "roc_auc": 0.44567435704172464
+      },
+      "model_for_comparison": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.00026737967914438503,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.00048309178743961357,
+        "n_windows": 374,
+        "n_windows_with_positive": 207,
+        "average_precision": 0.0007706408213140196,
+        "roc_auc": 0.39062562692732417
+      },
+      "model_beats_baseline": false
+    },
+    "C": {
+      "tested_on_config": "C",
+      "n_test_rows": 193200,
+      "n_positive_test_rows": 537,
+      "positive_rate_test": 0.0027795031055900623,
+      "past_hotspot_freq_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.0035714285714285718,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0037974683544303805,
+        "n_windows": 168,
+        "n_windows_with_positive": 158,
+        "average_precision": 0.0028717840304564187,
+        "roc_auc": 0.5097183036799979
+      },
+      "rule_only_baseline": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.002976190476190476,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0031645569620253164,
+        "n_windows": 168,
+        "n_windows_with_positive": 158,
+        "average_precision": 0.0027795031055900623,
+        "roc_auc": 0.5
+      },
+      "model_for_comparison": {
+        "precision_at_10_global_flattened": 0.0,
+        "lift_at_10_global_flattened": 0.0,
+        "precision_at_10_per_window_mean": 0.002380952380952381,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.002531645569620253,
+        "n_windows": 168,
+        "n_windows_with_positive": 158,
+        "average_precision": 0.002833397940380104,
+        "roc_auc": 0.5031149565381436
+      },
+      "model_beats_baseline": false
+    }
+  }
+}

@@ -114,6 +114,52 @@ def lift_at_k(y_true: np.ndarray, scores: np.ndarray, k: int = 10) -> float:
     return precision_at_k(y_true, scores, k) / base_rate
 
 
+def assemble_baseline_summary() -> dict:
+    """Pulls the baseline (past-hotspot-freq and rule-only) blocks already
+    computed per-config by evaluate.py's metrics_config_<X>.json files into
+    one standalone results/metrics_baselines.json, so "what does the
+    baseline alone score" is answerable without re-reading three separate
+    model-comparison files. Does NOT re-run anything -- purely an
+    aggregation of numbers already produced by actual evaluate.py runs."""
+    results_dir = REPO_ROOT / "results"
+    out = {
+        "label": "SIMULATED DATA (synthetic simulator output, NOT real-world transactions)",
+        "note": (
+            "Baseline-only summary assembled from results/metrics_config_{A,B,C}.json "
+            "(produced by model/evaluate.py). 'past_hotspot_freq' = as-of historical "
+            "label rate per terminal (THE baseline to beat per PROJECT_SPEC.md). "
+            "'rule_only' = heuristic mirroring the simulator's own terminal_choice "
+            "rule per config (see model/baselines.py:rule_only_baseline / "
+            "simulator/README.md). Headline metric is precision_at_10_per_window_mean "
+            "(see evaluate.py for why the per-window version, not the global-flattened "
+            "one, is the metric that matches actual deployment usage)."
+        ),
+        "by_config": {},
+    }
+    import json
+    for c in ["A", "B", "C"]:
+        p = results_dir / f"metrics_config_{c}.json"
+        if not p.exists():
+            out["by_config"][c] = {"error": "metrics_config file not found -- run evaluate.py first"}
+            continue
+        data = json.loads(p.read_text())
+        out["by_config"][c] = {
+            "tested_on_config": data.get("tested_on_config"),
+            "n_test_rows": data.get("n_test_rows"),
+            "n_positive_test_rows": data.get("n_positive_test_rows"),
+            "positive_rate_test": data.get("positive_rate_test"),
+            "past_hotspot_freq_baseline": data.get("baseline_past_hotspot_freq"),
+            "rule_only_baseline": data.get("rule_only"),
+            "model_for_comparison": data.get("model"),
+            "model_beats_baseline": data.get("beats_baseline"),
+        }
+    out_path = results_dir / "metrics_baselines.json"
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2, default=str)
+    print(f"[baselines] wrote {out_path}")
+    return out
+
+
 def precision_at_k_per_window(df: pd.DataFrame, scores: np.ndarray, k: int = 10,
                                window_col: str = "window_start", label_col: str = "label") -> dict:
     """Precision@k computed PER WINDOW and averaged, not globally over the
@@ -160,3 +206,7 @@ def precision_at_k_per_window(df: pd.DataFrame, scores: np.ndarray, k: int = 10,
         "n_windows_with_positive": len(per_window_only_positive),
         "k": k,
     }
+
+
+if __name__ == "__main__":
+    assemble_baseline_summary()
