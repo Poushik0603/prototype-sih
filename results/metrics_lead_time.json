@@ -1,0 +1,61 @@
+{
+  "computable": false,
+  "config": "A",
+  "reason": "The join that model/features.py actually uses for labels only matches 3 of 136 complaints to any transaction at all, and every one of those matches is a false-positive-noise complaint filed against an ordinary benign background account with is_mule=False and is_mule_hop=False on 100% of its matching transactions (confirmed above, see per-case n_matching_is_mule_hop_transactions=0) -- i.e. there is no 'actual mule withdrawal' event here at all, by the simulator's own ground truth. These accounts also have hundreds of transactions spread across the full ~20-day span and 190-210 distinct terminals each, so even if we treated this as a real link there is no single identifiable withdrawal moment to measure a lead time against -- picking e.g. 'the transaction nearest in time to filed_at' would be inventing a definition not supported by the data, which this task's honesty standard rules out. Genuine mule-ring withdrawals (is_mule_hop=True transactions, which DO have exact timestamps and ARE what model/features.py's labels are ultimately driven by at the (terminal, window) level) exist in transactions.parquet, but they are tied to freshly-minted mule account ids ('ACM######') that are never linked back to the complaint that resulted from that ring in any persisted table -- the FK that would make this join possible (complaint -> ring's mule account ids, or complaint -> ring_terminals_hit) is computed in-memory during simulation (simulator/lib/generate_core.py) and discarded before any parquet file is written. Computing a lead time would therefore require either (a) re-generating the simulator with an added persisted FK (complaint_id -> mule_account_ids or -> ring_terminals_hit), which means changing simulator output, out of scope for this additive-measurement task and not done here, or (b) inventing a proxy link (e.g. nearest-in-time or same-state heuristic) which would not be the actual generative link and would silently misrepresent what is being measured. Per this task's explicit instruction not to fabricate a number when the join is genuinely ambiguous or absent, we report this honestly as NOT COMPUTABLE from the data as currently persisted, rather than estimating it from the false-positive edge case or a nearest-timestamp heuristic.",
+  "what_would_make_this_computable": "Persisting one additional column in simulator output -- e.g. a ring_id or complaint_id field on EACH transaction row that is part of a mule ring (not just the boolean is_mule_hop flag already present), or a separate rings.parquet table mapping complaint_id -> {mule_account_ids, final_hop_terminal_id, final_hop_timestamp} -- would let this script compute lead_time_minutes = (window_start_of_flagged_window - filed_at).total_seconds()/60 directly and honestly, using the exact same final-hop timestamps simulator/lib/generate_core.py already computes internally as `ring_terminals_hit` before discarding them.",
+  "join_diagnostics": {
+    "n_complaints": 136,
+    "n_complaints_with_at_least_one_matching_transaction": 3,
+    "n_complaints_with_zero_matching_transactions": 133,
+    "fraction_joinable": 0.022058823529411766,
+    "linked_account_ids": [
+      "ACB000101",
+      "ACB000308",
+      "ACB000600"
+    ],
+    "linked_accounts_is_mule_ground_truth": {
+      "ACB000101": false,
+      "ACB000600": false,
+      "ACB000308": false
+    },
+    "complaint_account_id_prefix_counts": {
+      "ACV": 133,
+      "ACB": 3
+    },
+    "transaction_account_id_prefix_counts": {
+      "ACB": 193011,
+      "ACM": 1061
+    },
+    "diagnosis": "Complaints.account_id is almost always a victim account ('ACV######', the account the funds conceptually originate from), but the simulator writes ALL actual transaction rows -- including the final mule cash-out hop -- under freshly-minted mule account ids ('ACM######') that are never linked back to the originating complaint in any output table (see simulator/lib/generate_core.py: `ring_terminals_hit` -- the list of (terminal_id, timestamp) pairs for the actual withdrawal -- is built in memory per-complaint during generation and used only to construct the label set directly; it is discarded afterward and never written to complaints.parquet, transactions.parquet, or any other persisted table). As a structural consequence, model/features.py's own label join (complaints.account_id vs transactions.account_id, exactly reproduced above) does not match a victim's complaint to their ring's actual withdrawal at all -- it has a 0% join rate for genuine mule rings. The only complaints where this join succeeds are the small number of injected FALSE-POSITIVE noise complaints (id prefix 'CMPFP', filed against an ordinary benign background account that already has normal unrelated transaction activity under its own account_id -- see generate_core.py's false-positive block, which explicitly notes 'the innocent account never made a mule-hop withdrawal'). Those accidental joins are NOT a mule withdrawal event by construction (is_mule=False, is_mule_hop=False on every matching transaction) and have hundreds of unrelated transactions spread across the whole time range and most terminals in the city, so there is no single 'the withdrawal' moment to anchor a lead-time number to even if we wanted to use this edge case."
+  },
+  "false_positive_edge_case_cases_examined": [
+    {
+      "complaint_id": "CMPFP000002",
+      "account_id": "ACB000101",
+      "filed_at": "2026-01-07 17:39:00",
+      "n_matching_transactions": 215,
+      "n_matching_is_mule_hop_transactions": 0,
+      "n_distinct_terminals_touched": 192,
+      "txn_time_span_days": 20.374618055555555
+    },
+    {
+      "complaint_id": "CMPFP000001",
+      "account_id": "ACB000600",
+      "filed_at": "2026-01-11 06:45:00",
+      "n_matching_transactions": 221,
+      "n_matching_is_mule_hop_transactions": 0,
+      "n_distinct_terminals_touched": 206,
+      "txn_time_span_days": 20.93644675925926
+    },
+    {
+      "complaint_id": "CMPFP000003",
+      "account_id": "ACB000308",
+      "filed_at": "2026-01-20 06:34:00",
+      "n_matching_transactions": 235,
+      "n_matching_is_mule_hop_transactions": 0,
+      "n_distinct_terminals_touched": 210,
+      "txn_time_span_days": 20.905798611111113
+    }
+  ],
+  "n_cases_examined": 3
+}
