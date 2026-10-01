@@ -61,6 +61,15 @@ def _try_load_real_backend():
 
         features_df = pd.read_parquet(FEATURES_PATH)
 
+        # Score only the single latest window_start, not the entire history —
+        # SHAP TreeExplainer over the full table (hundreds of thousands of
+        # terminal-window rows) is far too slow for a request path. The API
+        # only ever needs one as-of ranking at a time (see /api/terminals/ranked's
+        # ?window_start= param); re-score lazily per requested window instead
+        # of eagerly scoring everything up front.
+        latest_window = features_df["window_start"].max()
+        features_df = features_df[features_df["window_start"] == latest_window]
+
         model = CassandraModel.load("A")
         results = model.score(features_df)
 
