@@ -1,5 +1,7 @@
 # Prototype Report — Cassandra AI (SIH26184)
 
+Repository: https://github.com/Poushik0603/prototype-sih
+
 Every number below comes from an actual run saved to disk, with the file that produced
 it named next to it. Where something was not measured, this says so explicitly rather
 than estimating.
