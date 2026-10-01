@@ -2,9 +2,9 @@
 
 Reads transactions/accounts/complaints/terminals for a single simulator config
 (or the dev fixture) and emits data/processed/features_config_<X>.parquet
-matching SCHEMA_CONTRACT.md's "feature table" section.
+matching docs/DATA_SCHEMA.md's "feature table" section.
 
-LEAKAGE DISCIPLINE (mandatory per PROJECT_SPEC.md):
+LEAKAGE DISCIPLINE (mandatory):
   - Every feature for window [window_start, window_start + 2h) uses ONLY
     transactions/complaints with timestamp < window_start (strictly as-of).
   - The account-graph feature (shortest path to a complaint-linked account) is
@@ -16,10 +16,10 @@ LEAKAGE DISCIPLINE (mandatory per PROJECT_SPEC.md):
     "embargo" (dropped before saving... actually we keep it but never assign
     train/val/test so it can never leak). See `make_rolling_origin_splits`.
 
-Label definition (PROJECT_SPEC.md / SCHEMA_CONTRACT.md):
+Label definition (see docs/DATA_SCHEMA.md):
   label = 1 if a complaint-linked mule account withdraws (has a transaction)
   at that (terminal, window) bucket. "Complaint-linked" = account_id that is
-  the subject of a complaint (SCHEMA_CONTRACT: complaints.account_id) OR that
+  the subject of a complaint (complaints.account_id) OR that
   is flagged is_mule=True in accounts (ground truth flag the simulator writes
   for dev/eval purposes only -- NOT used as a feature, only for labeling,
   matching how a real bank would learn about mule accounts: via complaints).
@@ -390,7 +390,7 @@ def compute_graph_distance_feature(windows: pd.DataFrame, terminals: pd.DataFram
 
 def make_rolling_origin_splits(windows: pd.DataFrame) -> pd.Series:
     """Rolling-origin split by calendar time with a 7-day embargo between
-    train and val (and between val and test), per PROJECT_SPEC.md.
+    train and val (and between val and test).
 
     Timeline layout:
       [-------- train --------][--embargo 7d--][val][--embargo 7d--][test]

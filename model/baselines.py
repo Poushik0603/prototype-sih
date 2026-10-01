@@ -3,7 +3,7 @@
 1. Past-hotspot frequency baseline: rank terminals by their as-of historical
    label rate (the same `past_hotspot_freq` feature computed in features.py,
    reused here unmodified so the baseline and the feature are guaranteed
-   consistent). THIS IS THE BASELINE TO BEAT per PROJECT_SPEC.md.
+   consistent). THIS IS THE BASELINE TO BEAT.
 
 2. Rule-only baseline: mirrors the simulator's own generator heuristic for
    terminal_choice. Per simulator/configs/{A,B,C}.yaml:
@@ -127,7 +127,7 @@ def assemble_baseline_summary() -> dict:
         "note": (
             "Baseline-only summary assembled from results/metrics_config_{A,B,C}.json "
             "(produced by model/evaluate.py). 'past_hotspot_freq' = as-of historical "
-            "label rate per terminal (THE baseline to beat per PROJECT_SPEC.md). "
+            "label rate per terminal (THE baseline to beat). "
             "'rule_only' = heuristic mirroring the simulator's own terminal_choice "
             "rule per config (see model/baselines.py:rule_only_baseline / "
             "simulator/README.md). Headline metric is precision_at_10_per_window_mean "
@@ -169,7 +169,7 @@ def precision_at_k_per_window(df: pd.DataFrame, scores: np.ndarray, k: int = 10,
     terminals WITHIN one 2h window at a time (the officer-view API scores
     one as-of window's ~1150 terminal candidates and returns a top-N ranked
     list -- see model/predict.py:CassandraModel.score and
-    SCHEMA_CONTRACT.md's response shape, which has no window-spanning
+    docs/DATA_SCHEMA.md's response shape, which has no window-spanning
     notion of "top 10 overall"). A single flattened precision@10 across
     hundreds of windows x 1150 terminals/window asks "are any of the 10
     single highest-scored rows in the ENTIRE test table positive", which is

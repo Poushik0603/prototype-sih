@@ -44,10 +44,10 @@
     "window_width_hours": 2
   },
   "latency": {
-    "p50_ms": 0.6682999992335681,
-    "p95_ms": 0.7837950044631725,
+    "p50_ms": 0.7231000017782208,
+    "p95_ms": 4.476750004687332,
     "batch_size": 100,
     "n_batches": 30,
-    "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- that is the API agent's benchmark."
+    "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- see results/api_latency.json for that measurement."
   }
 }

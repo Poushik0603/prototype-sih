@@ -10,7 +10,7 @@ Usage:
 For a given config (A/B/C), loads simulator/configs/<X>.yaml, loads the
 terminals table (real data/simulated/fixture/terminals.parquet if present,
 else an auto-generated placeholder), generates accounts/transactions/
-complaints, writes them to data/simulated/config_<X>/ per SCHEMA_CONTRACT.md,
+complaints, writes them to data/simulated/config_<X>/ per docs/DATA_SCHEMA.md,
 and writes a run manifest (+ best-effort MLflow local-store logging) with
 seed, calibration hash, config name, and rules version for reproducibility.
 """
@@ -99,7 +99,7 @@ def run_one(config_name: str) -> dict:
     try:
         import os
 
-        # PROJECT_SPEC.md locks MLflow to a local file store, no server. Newer MLflow
+        # MLflow is used with a local file store here, no server. Newer MLflow
         # (3.x) puts the plain filesystem backend in "maintenance mode" and refuses to
         # write unless this is explicitly opted into.
         os.environ.setdefault("MLFLOW_ALLOW_FILE_STORE", "true")

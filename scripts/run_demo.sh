@@ -5,7 +5,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-PY=./.venv/Scripts/python.exe
+if [ -f ./.venv/Scripts/python.exe ]; then
+  PY=./.venv/Scripts/python.exe   # Windows venv layout
+else
+  PY=./.venv/bin/python            # macOS/Linux venv layout
+fi
 
 echo "[1/6] Fetching calibration data + terminals (skips if already cached)..."
 $PY scripts/fetch_calibration.py
@@ -36,6 +40,6 @@ echo "API started (pid $!), logs at /tmp/cassandra_api.log"
 echo "UI starting at http://localhost:5173 (logs at /tmp/cassandra_ui.log)"
 
 echo ""
-echo "Done. Results: results/metrics_*.json, results/results.md"
+echo "Done. Results: results/metrics_*.json, PROTOTYPE_REPORT.md"
 echo "API:  http://127.0.0.1:8000/api/health"
 echo "UI:   http://localhost:5173"

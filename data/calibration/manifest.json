@@ -1,5 +1,5 @@
 {
-  "generated_by": "scripts/fetch_calibration.py + scripts/build_terminals.py (Data agent)",
+  "generated_by": "scripts/fetch_calibration.py + scripts/build_terminals.py",
   "files": [
     {
       "filename": "data/raw/osm_atms_bengaluru.json",
@@ -16,7 +16,7 @@
       "size_bytes": 45259,
       "source_url": "derived from data/raw/osm_atms_bengaluru.json",
       "access_timestamp_utc": "2026-10-01T03:09:00Z",
-      "description": "Terminals table (1150 rows) built from the raw OSM ATM nodes: real lat/lon/h3_cell (H3 res 9), synthetic bank name and install_date columns per SCHEMA_CONTRACT.md. Identical content also saved to data/simulated/fixture/terminals.parquet for early Model/API integration."
+      "description": "Terminals table (1150 rows) built from the raw OSM ATM nodes: real lat/lon/h3_cell (H3 res 9), synthetic bank name and install_date columns per docs/DATA_SCHEMA.md. Identical content also saved to data/simulated/fixture/terminals.parquet for early Model/API integration."
     },
     {
       "filename": "data/calibration/ncrp_state_totals.csv",

@@ -1,10 +1,9 @@
-# Real-Data Benchmark Notes (Benchmark Agent)
+# Real-Data Benchmark Notes
 
-Per `PROJECT_SPEC.md` → "Real-data benchmarks" and "Reporting rules": every number below is
-explicitly labeled as coming from **real, publicly obtainable data** (never simulated), kept
-separate from the simulator/circularity-protocol results, and only reported when produced by
-an actual run saved to disk. Raw downloaded data lives under `data/raw/` with SHA256 checksums.
-Code lives under `model/benchmarks/`.
+Every number below is explicitly labeled as coming from **real, publicly obtainable data**
+(never simulated), kept separate from the simulator/circularity-protocol results, and only
+reported when produced by an actual run saved to disk. Raw downloaded data lives under
+`data/raw/` with SHA256 checksums. Code lives under `model/benchmarks/`.
 
 ---
 
@@ -24,15 +23,13 @@ Code lives under `model/benchmarks/`.
 
 ### Why we stopped here
 
-Both datasets named in the task have exactly one authoritative distribution channel apiece
-(Kaggle for Elliptic; Kaggle or an IBM-controlled Box folder for AMLworld), and both are
-gated behind interactive auth/JS that this non-interactive agent session cannot complete. The
-only channels reachable without auth were unofficial third-party re-uploads whose licensing
-claims cannot be verified against the originals. Per the task instructions ("If both require
-login/auth you can't complete non-interactively, or licensing terms are unclear/restrictive,
-DO NOT use them... Do not fabricate a substitute dataset pretending it's AMLworld/Elliptic"),
-this part of the benchmark is **skipped, not faked**. No graph/linkage numbers are reported
-against Elliptic or AMLworld.
+Both datasets have exactly one authoritative distribution channel apiece (Kaggle for
+Elliptic; Kaggle or an IBM-controlled Box folder for AMLworld), and both are gated behind
+interactive auth/JS that could not be completed in this environment. The only channels
+reachable without auth were unofficial third-party re-uploads whose licensing claims cannot
+be verified against the originals. Rather than use an unverified substitute, this part of the
+benchmark is **skipped, not faked**. No graph/linkage numbers are reported against Elliptic
+or AMLworld.
 
 **If Kaggle credentials become available later** (a `kaggle.json` API token placed at
 `~/.kaggle/kaggle.json`), re-run is straightforward: `kaggle datasets download
@@ -100,9 +97,9 @@ On real Chicago crime data, the space+time-rescaled DBSCAN approach produces a s
 single-location, single-crime-type burst like the 22/26-incident "CRIMINAL DAMAGE" cluster at
 one parking lot within a 12-hour window) rather than noise artifacts. Most points (95%) remain
 unclustered, which is expected and sensible for citywide crime data that is spatially diffuse
-outside of genuine hotspots. This is a good sign that the same clustering machinery the Model
-agent will use for candidate-terminal detection behaves reasonably on a real point process, not
-just the simulator's synthetic mule bursts — though this check only validates cluster
+outside of genuine hotspots. This is a good sign that the same clustering machinery used for
+candidate-terminal detection (`model/stdbscan.py`) behaves reasonably on a real point process,
+not just the simulator's synthetic mule bursts — though this check only validates cluster
 *formation behavior*, not fraud-specific precision, since Chicago crime data has no ground-truth
 "mule terminal" labels to score against.
 
@@ -116,7 +113,6 @@ just the simulator's synthetic mule bursts — though this check only validates 
   detection precision on this dataset.
 - **Graph/linkage module**: **not validated against real data** — both Elliptic and AMLworld
   were blocked by non-interactive auth walls on their only authoritative distribution
-  channels, and no unverified substitute was used, per the task's explicit instruction not to
-  fabricate a substitute. This is an open gap; flagged honestly rather than papered over.
-  A path to close it is documented above if Kaggle credentials become available before the
-  deadline.
+  channels, and no unverified substitute was used. This is an open gap; flagged honestly
+  rather than papered over. A path to close it is documented above if Kaggle credentials
+  become available.

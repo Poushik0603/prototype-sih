@@ -1,8 +1,8 @@
 """Multi-seed model training/evaluation wrapper (additive measurement only).
 
 Does NOT touch feature engineering, label construction, or split logic in
-features.py -- those are independently reviewed and verified leak-free (see
-results/REVIEW.md). This script only varies the XGBoost `random_state` seed
+features.py -- those are independently verified leak-free (see
+results/VERIFICATION.md). This script only varies the XGBoost `random_state` seed
 across several training runs on config A's existing train/val split (as
 already produced by features.py / stored in data/processed/features_config_A.parquet),
 reusing train.py's tune_on_val()/train_model() functions unmodified, and

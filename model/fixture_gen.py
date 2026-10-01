@@ -1,10 +1,10 @@
-"""Generate a small synthetic dev fixture matching SCHEMA_CONTRACT.md exactly.
+"""Generate a small synthetic dev fixture matching docs/DATA_SCHEMA.md exactly.
 
-This is NOT the real simulator output. It exists so the Model agent can build
-and test the feature pipeline, ST-DBSCAN, and XGBoost training code end-to-end
-before data/simulated/config_A (etc.) exist. Saved under
-data/processed/dev_fixture/ (kept separate from data/simulated/ to avoid
-colliding with the Simulator agent's own output directory).
+This is NOT the real simulator output. It exists to build and test the feature
+pipeline, ST-DBSCAN, and XGBoost training code end-to-end before
+data/simulated/config_A (etc.) exist. Saved under data/processed/dev_fixture/
+(kept separate from data/simulated/ to avoid colliding with the simulator's own
+output directory).
 
 Produces three "mini configs" (fx_A, fx_B, fx_C) that loosely mirror the real
 simulator's three terminal_choice heuristics (nearest_to_last_hop /

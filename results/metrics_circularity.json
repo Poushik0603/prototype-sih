@@ -1,5 +1,5 @@
 {
-  "protocol": "circularity protocol per PROJECT_SPEC.md",
+  "protocol": "cross-config circularity / generalisation protocol",
   "label": "ALL NUMBERS ON SIMULATED DATA",
   "step1_cross_config_generalization": {
     "trained_on": "A",
@@ -55,11 +55,11 @@
           "window_width_hours": 2
         },
         "latency": {
-          "p50_ms": 0.6661500010523014,
-          "p95_ms": 0.9361599983094493,
+          "p50_ms": 0.7253000003402121,
+          "p95_ms": 2.058385000782432,
           "batch_size": 100,
           "n_batches": 30,
-          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- that is the API agent's benchmark."
+          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- see results/api_latency.json for that measurement."
         }
       },
       "B": {
@@ -108,11 +108,11 @@
           "window_width_hours": 2
         },
         "latency": {
-          "p50_ms": 0.6682999992335681,
-          "p95_ms": 0.7837950044631725,
+          "p50_ms": 0.7231000017782208,
+          "p95_ms": 4.476750004687332,
           "batch_size": 100,
           "n_batches": 30,
-          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- that is the API agent's benchmark."
+          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- see results/api_latency.json for that measurement."
         }
       },
       "C": {
@@ -161,17 +161,17 @@
           "window_width_hours": 2
         },
         "latency": {
-          "p50_ms": 0.7083999989845324,
-          "p95_ms": 1.2394500005029823,
+          "p50_ms": 0.9523499975330196,
+          "p95_ms": 6.733739999617682,
           "batch_size": 100,
           "n_batches": 30,
-          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- that is the API agent's benchmark."
+          "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); excludes HTTP/serialization/API overhead -- see results/api_latency.json for that measurement."
         }
       }
     },
     "missing_configs": [],
     "complete": true,
-    "note": "Complete: model trained on config A evaluated on A (in-sample test split), B and C (cross-config, different mule topology/timing per PROJECT_SPEC.md)."
+    "note": "Complete: model trained on config A evaluated on A (in-sample test split), B and C (cross-config, genuinely different mule topology/timing per config)."
   },
   "step2_rule_only_baseline": {
     "note": "Included inline in each config's 'rule_only' block above. Rule mirrors the generator's own terminal_choice heuristic per config: A=nearest_to_last_hop (proximity-based score), B=hotspot_avoidant (inverse recent-activity score), C=random_in_city (uniform score, no informative signal by construction -- see simulator/configs/{A,B,C}.yaml and model/baselines.py:rule_only_baseline for the exact per-config logic)."
@@ -180,7 +180,7 @@
     "note": "Simulator bakes differing label-noise rates into each config rather than exposing a standalone re-runnable noise knob (see simulator/configs/*.yaml label_noise blocks): A: false_negative_rate=0.05, false_positive_rate=0.02, label_delay_days in [0,14]. B: false_negative_rate=0.08, false_positive_rate=0.02, label_delay_days in [0,21]. C: false_negative_rate=0.10, false_positive_rate=0.04, label_delay_days in [0,10]. We report the model's metric degradation from A (lowest noise) to B and C (higher noise) as the robustness datapoint -- see step1_cross_config_generalization.results_by_config for the precision@10 values to compare directly. This conflates topology/timing shift with noise-rate shift (both change per config simultaneously), which is a real limitation of this thin slice: we cannot isolate 'noise effect alone' without a dedicated same-topology/different-noise config, which was out of scope for the prototype."
   },
   "step4_real_data_separation": {
-    "note": "Out of scope for the Model agent -- owned by the Benchmark agent (model/benchmarks/, results/). This file and every metrics_config_*.json produced by the Model agent are exclusively simulated-data results and are never blended with any real-data benchmark numbers."
+    "note": "Real-data benchmarks live separately under model/benchmarks/ and results/benchmark_notes.md. This file and every metrics_config_*.json are exclusively simulated-data results and are never blended with any real-data benchmark numbers."
   },
-  "step5_realism_gap_statement": "All metrics in this file are computed EXCLUSIVELY on simulator-generated data (simulator/configs/A.yaml, B.yaml, C.yaml) -- a seeded, rules-based generator calibrated against public NCRP/RBI/OSM summary statistics, not real bank transaction data. The simulator's mule-detection 'signal' (e.g. terminal proximity to recent activity, complaint density) is generated by the SAME family of heuristics the model is trying to learn (see simulator/configs/*.yaml terminal_choice rules), which inflates apparent model performance relative to a real deployment: a real adversary does not follow a known, stationary terminal_choice distribution, and real background traffic is not drawn from the same lognormal/poisson generators the model's features are tuned against. Cross-config generalization (A -> B, A -> C) is the best available proxy we have for this gap on a thin-slice prototype, but it is NOT a substitute for real-data validation (see the Benchmark agent's separate, real-data-only results for AMLworld/Elliptic/Chicago Crimes sanity checks, reported separately and never blended with these numbers). Precision@10 and lift figures here should be read as 'does the model learn the intended mule-activity signal at all', not as an estimate of real-world fraud-detection performance."
+  "step5_realism_gap_statement": "All metrics in this file are computed EXCLUSIVELY on simulator-generated data (simulator/configs/A.yaml, B.yaml, C.yaml) -- a seeded, rules-based generator calibrated against public NCRP/RBI/OSM summary statistics, not real bank transaction data. The simulator's mule-detection 'signal' (e.g. terminal proximity to recent activity, complaint density) is generated by the SAME family of heuristics the model is trying to learn (see simulator/configs/*.yaml terminal_choice rules), which inflates apparent model performance relative to a real deployment: a real adversary does not follow a known, stationary terminal_choice distribution, and real background traffic is not drawn from the same lognormal/poisson generators the model's features are tuned against. Cross-config generalization (A -> B, A -> C) is the best available proxy we have for this gap on a thin-slice prototype, but it is NOT a substitute for real-data validation (see the separate, real-data-only results for AMLworld/Elliptic/Chicago Crimes sanity checks in results/benchmark_notes.md, reported separately and never blended with these numbers). Precision@10 and lift figures here should be read as 'does the model learn the intended mule-activity signal at all', not as an estimate of real-world fraud-detection performance."
 }

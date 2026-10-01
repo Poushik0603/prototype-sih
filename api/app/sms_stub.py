@@ -1,7 +1,7 @@
 """
 Mock MSG91 SMS stub.
 
-Per PROJECT_SPEC.md: SMS is MOCK ONLY. This module never calls a real SMS API —
+SMS is MOCK ONLY. This module never calls a real SMS API —
 it only logs what would be sent, for the demo's "Send Alert" flow.
 """
 import logging

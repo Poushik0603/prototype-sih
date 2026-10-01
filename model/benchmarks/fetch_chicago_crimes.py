@@ -7,7 +7,7 @@ License: Public Domain / Open Data (Chicago Data Portal Terms of Use — public 
 data, free to use). https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2
 
 This is REAL DATA (not simulated). Used only as a sanity check for the ST-DBSCAN
-spatio-temporal clustering module, per PROJECT_SPEC.md "Real-data benchmarks" section.
+spatio-temporal clustering module — see results/benchmark_notes.md.
 """
 import hashlib
 import json

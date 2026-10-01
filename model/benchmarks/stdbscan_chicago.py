@@ -1,16 +1,15 @@
 """
 ST-DBSCAN sanity check on real Chicago Crimes data (REAL DATA, not simulated).
 
-Purpose: validate that the spatio-temporal clustering approach the Model agent uses for
-candidate-terminal detection (ST-DBSCAN over ATM/POS terminal x 2h window events) behaves
+Purpose: validate that the spatio-temporal clustering approach used for candidate-terminal
+detection (ST-DBSCAN over ATM/POS terminal x 2h window events, see model/stdbscan.py) behaves
 sensibly on a real spatio-temporal point process — crime incidents in space and time, which
 share the same "clustered in space AND time" structure as mule cash-out bursts.
 
 Method: scikit-learn DBSCAN with a combined space+time distance. We build a 3D feature
 space (x_km, y_km, t_hours) using a local equirectangular projection for lat/lon -> km, and
 scale time so that `eps` trades off a spatial radius against a temporal window in one DBSCAN
-call. This is a standard, lightweight way to implement ST-DBSCAN without a bespoke library,
-per the benchmark agent's task note ("don't over-engineer a full custom library").
+call. This is a standard, lightweight way to implement ST-DBSCAN without a bespoke library.
 
 Two points are considered neighbors if:
   spatial_distance_km <= spatial_eps_km   AND   temporal_distance_hours <= temporal_eps_hours

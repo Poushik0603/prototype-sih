@@ -11,10 +11,10 @@ sudo service docker start
 it via `sudo systemctl enable docker` if your WSL distro runs systemd.)
 
 ## Start the database
-From WSL Ubuntu, in this directory (translate the Windows path, e.g.
-`/mnt/c/Users/royal/OneDrive/Documents/SIH 2026/prototype/docker`):
+From WSL Ubuntu, in this directory (translate the Windows path to its `/mnt/c/...`
+WSL equivalent):
 ```bash
-cd "/mnt/c/Users/royal/OneDrive/Documents/SIH 2026/prototype/docker"
+cd "/mnt/c/path/to/this/repo/docker"
 docker compose up -d
 docker compose ps
 ```
@@ -27,5 +27,6 @@ Postgres will be reachable from Windows (and this repo's Python code) at
 docker compose exec postgres psql -U cassandra -d cassandra -c "\dx"
 ```
 Should list `postgis`. If `pgmq` extension fails to install (not bundled in the
-`postgis/postgis` image), fall back to a plain Postgres table-based queue — note the
-deviation in results.md, do not block the pipeline on it.
+`postgis/postgis` image), fall back to a plain Postgres table-based queue — see
+`docker/init/001_extensions.sql` for the documented fallback; not required for
+the current pipeline, which reads Parquet directly.

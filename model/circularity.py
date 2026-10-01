@@ -1,4 +1,4 @@
-"""Circularity protocol (PROJECT_SPEC.md, MANDATORY) orchestration.
+"""Circularity protocol orchestration (mandatory part of the evaluation design).
 
 Step 1: train on config A, test on B and C -- handled by evaluate.py's
   per-config metrics_config_<X>.json outputs; this script assembles them
@@ -11,10 +11,10 @@ Step 3: label noise / delayed label robustness -- the simulator already
   C=10%/4%). We treat configs B and C's degraded metrics (vs A) as the noise
   robustness datapoint, since the simulator's noise knob is baked into config
   generation rather than exposed as a separate re-runnable parameter. This is
-  one honest datapoint per config, as PROJECT_SPEC.md allows for a thin slice.
-Step 4: real-data vs simulated-data separation -- NOT this agent's job (the
-  Benchmark agent owns real-data checks). Every number in this file is
-  labeled "on simulated data" so no numbers get blended.
+  one honest datapoint per config, an acceptable simplification for a thin slice.
+Step 4: real-data vs simulated-data separation -- handled separately by the
+  benchmarks in model/benchmarks/ and results/benchmark_notes.md. Every number
+  in this file is labeled "on simulated data" so no numbers get blended.
 Step 5: realism-gap statement -- written here plainly, no overclaiming.
 """
 from __future__ import annotations
@@ -38,9 +38,10 @@ REALISM_GAP_STATEMENT = (
     "traffic is not drawn from the same lognormal/poisson generators the model's "
     "features are tuned against. Cross-config generalization (A -> B, A -> C) is "
     "the best available proxy we have for this gap on a thin-slice prototype, but "
-    "it is NOT a substitute for real-data validation (see the Benchmark agent's "
-    "separate, real-data-only results for AMLworld/Elliptic/Chicago Crimes "
-    "sanity checks, reported separately and never blended with these numbers). "
+    "it is NOT a substitute for real-data validation (see the separate, "
+    "real-data-only results for AMLworld/Elliptic/Chicago Crimes sanity checks "
+    "in results/benchmark_notes.md, reported separately and never blended with "
+    "these numbers). "
     "Precision@10 and lift figures here should be read as 'does the model learn "
     "the intended mule-activity signal at all', not as an estimate of real-world "
     "fraud-detection performance."
@@ -57,7 +58,7 @@ def assemble():
     missing = [c for c in ["A", "B", "C"] if c not in per_config]
 
     combined = {
-        "protocol": "circularity protocol per PROJECT_SPEC.md",
+        "protocol": "cross-config circularity / generalisation protocol",
         "label": "ALL NUMBERS ON SIMULATED DATA",
         "step1_cross_config_generalization": {
             "trained_on": "A",
@@ -70,7 +71,7 @@ def assemble():
                 "was run; circularity protocol step 1 is PARTIAL pending those configs."
                 if missing else
                 "Complete: model trained on config A evaluated on A (in-sample test split), "
-                "B and C (cross-config, different mule topology/timing per PROJECT_SPEC.md)."
+                "B and C (cross-config, genuinely different mule topology/timing per config)."
             ),
         },
         "step2_rule_only_baseline": {
@@ -103,10 +104,10 @@ def assemble():
         },
         "step4_real_data_separation": {
             "note": (
-                "Out of scope for the Model agent -- owned by the Benchmark agent "
-                "(model/benchmarks/, results/). This file and every metrics_config_*.json "
-                "produced by the Model agent are exclusively simulated-data results and are "
-                "never blended with any real-data benchmark numbers."
+                "Real-data benchmarks live separately under model/benchmarks/ and "
+                "results/benchmark_notes.md. This file and every metrics_config_*.json "
+                "are exclusively simulated-data results and are never blended with any "
+                "real-data benchmark numbers."
             ),
         },
         "step5_realism_gap_statement": REALISM_GAP_STATEMENT,

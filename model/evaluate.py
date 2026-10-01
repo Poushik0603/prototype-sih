@@ -41,7 +41,8 @@ def load_trained_model(train_config: str) -> tuple[xgb.Booster, list[str]]:
 def latency_benchmark(booster: xgb.Booster, feature_cols: list[str], df: pd.DataFrame,
                        batch_size: int = 100, n_batches: int = 30) -> dict:
     """Benchmarks model.predict() call time on batches of terminals (own
-    model only -- NOT full API server latency, that's the API agent's job)."""
+    model only -- NOT full API server latency, see results/api_latency.json
+    for that measurement)."""
     rng = np.random.default_rng(42)
     times_ms = []
     n = len(df)
@@ -61,7 +62,8 @@ def latency_benchmark(booster: xgb.Booster, feature_cols: list[str], df: pd.Data
         "batch_size": batch_size,
         "n_batches": n_batches,
         "note": "model.predict() only (XGBoost Booster.predict on a DMatrix batch); "
-                "excludes HTTP/serialization/API overhead -- that is the API agent's benchmark.",
+                "excludes HTTP/serialization/API overhead -- see results/api_latency.json "
+                "for that measurement.",
     }
 
 

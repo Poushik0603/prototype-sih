@@ -1,13 +1,13 @@
-"""Inference helper for the API agent.
+"""Inference helper consumed by the API (see api/app/data_source.py).
 
-Usage (the exact integration point — see AGENT_REPORT.md):
+Usage:
 
     from model.predict import CassandraModel
 
     model = CassandraModel.load("A")  # loads model/artifacts/xgb_config_A.json
     rows = model.score(feature_df)    # feature_df: rows from features_config_*.parquet
                                        # (or any DataFrame with the same feature columns)
-    # rows is a list of dicts matching SCHEMA_CONTRACT.md's
+    # rows is a list of dicts matching docs/DATA_SCHEMA.md's
     # "model output / API response" shape:
     # {terminal_id, lat, lon, window_start, risk_score, rank,
     #  top_shap_features, baseline_score}
@@ -56,7 +56,7 @@ class CassandraModel:
     def top_shap_features(self, df: pd.DataFrame, top_n: int = 3) -> list[list[dict]]:
         """Returns, per row, the top_n |SHAP value|-ranked features as
         [{"feature": name, "value": shap_value}, ...] -- matches
-        SCHEMA_CONTRACT.md's top_shap_features field."""
+        docs/DATA_SCHEMA.md's top_shap_features field."""
         shap_values = self._explainer.shap_values(df[self.feature_cols])
         out = []
         for i in range(len(df)):
@@ -71,7 +71,7 @@ class CassandraModel:
     def score(self, df: pd.DataFrame, baseline_col: str = "past_hotspot_freq",
               top_n_shap: int = 3) -> list[dict]:
         """Scores a feature-table DataFrame and returns the API response shape
-        from SCHEMA_CONTRACT.md, ranked descending by risk_score (rank=1 is
+        from docs/DATA_SCHEMA.md, ranked descending by risk_score (rank=1 is
         highest risk)."""
         risk = self.predict_proba(df)
         shap_top = self.top_shap_features(df, top_n=top_n_shap)

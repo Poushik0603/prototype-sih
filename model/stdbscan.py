@@ -1,8 +1,8 @@
 """ST-DBSCAN candidate terminal shortlisting.
 
 Clusters terminals in space + time using their recent transaction activity,
-to narrow the search space before XGBoost ranking (per PROJECT_SPEC.md
-pipeline: "ST-DBSCAN candidate terminals -> XGBoost ranker").
+to narrow the search space before XGBoost ranking (pipeline stage: "ST-DBSCAN
+candidate terminals -> XGBoost ranker").
 
 Implementation: plain scikit-learn DBSCAN over a precomputed distance matrix
 that combines:

@@ -1,6 +1,6 @@
 """
-Cassandra AI -- Data agent: build the `terminals` table from the frozen OSM raw
-data, per the exact schema in SCHEMA_CONTRACT.md:
+Cassandra AI -- builds the `terminals` table from the frozen OSM raw data, per
+the exact schema in docs/DATA_SCHEMA.md:
 
     terminal_id, lat, lon, h3_cell (res 9), type, bank, install_date
 
@@ -12,7 +12,7 @@ data/calibration/README.md. Lat/lon/h3_cell come directly from real OSM data.
 
 Output:
     data/simulated/fixture/terminals.parquet   (also serves as the "fixture"
-        referenced in SCHEMA_CONTRACT.md for early Model/API integration --
+        referenced in docs/DATA_SCHEMA.md for early Model/API integration --
         this IS the full terminal universe, just placed at the fixture path
         too, since the city-scale terminal count is already small enough to
         act as its own fixture)

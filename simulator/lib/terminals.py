@@ -1,8 +1,8 @@
 """Terminal table loading.
 
-Prefers the real Data-agent output at data/simulated/fixture/terminals.parquet
+Prefers the real terminals output at data/simulated/fixture/terminals.parquet
 (schema: terminal_id, lat, lon, h3_cell, type, bank, install_date — see
-SCHEMA_CONTRACT.md). If that file does not exist yet, generates a small
+docs/DATA_SCHEMA.md). If that file does not exist yet, generates a small
 synthetic placeholder terminals table over plausible India coordinates so the
 simulator can be developed and run end-to-end without waiting.
 """
@@ -22,9 +22,8 @@ REAL_TERMINALS_PATH = REPO_ROOT / "data" / "simulated" / "fixture" / "terminals.
 PLACEHOLDER_TERMINALS_PATH = REPO_ROOT / "simulator" / "lib" / "_placeholder_terminals.parquet"
 
 # Rough bounding box around central Bengaluru, used only for the placeholder.
-# (Chosen because it's a common candidate city for the Data agent's OSM extract;
-# if the Data agent picks a different city, the real terminals.parquet simply
-# supersedes this placeholder once it lands — see README / AGENT_REPORT.)
+# (Matches the real OSM extract's city — see data/calibration/README.md. The real
+# terminals.parquet simply supersedes this placeholder once it exists on disk.)
 _LAT_RANGE = (12.90, 13.05)
 _LON_RANGE = (77.55, 77.70)
 _BANKS = ["SBI", "HDFC", "ICICI", "Axis", "PNB", "BOB", "Canara", "Kotak"]

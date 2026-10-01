@@ -1,5 +1,5 @@
 """
-Cassandra AI -- Data agent reproducibility script.
+Cassandra AI -- calibration data reproducibility script.
 
 Fetches real ATM terminal coordinates from OpenStreetMap (Overpass API) for the
 chosen city (Bengaluru) and freezes the raw response under data/raw/.
@@ -49,7 +49,7 @@ out body;
 """
 
 HEADERS = {
-    "User-Agent": "CassandraAI-SIH2026-Hackathon-Prototype/1.0 (data agent fetch script)",
+    "User-Agent": "CassandraAI-SIH2026-Hackathon-Prototype/1.0 (calibration fetch script)",
     "Accept": "*/*",
 }
 

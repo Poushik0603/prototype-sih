@@ -1,12 +1,12 @@
 """Core seeded generator: builds accounts, transactions, complaints for one SimConfig.
 
-Label mechanism (must stay exactly this simple per PROJECT_SPEC.md thin-slice priority):
+Label mechanism (kept deliberately simple for this thin slice):
   label(terminal, 2h window) = 1  iff  a complaint-linked mule account made a cash-out
   withdrawal (is_mule_hop=True, final hop of a ring) at that terminal within that window,
   AND that ring's complaint was (eventually) filed -- i.e. not dropped by the
   false_negative_rate noise. Label noise/delay is applied on top of this ground truth by
-  the Model agent's feature-table stage using the complaint filed_at + label_delay; we hand
-  off ground truth (is_mule_hop, complaint linkage) and let the delay be expressed via
+  the feature-table stage (model/features.py) using the complaint filed_at + label_delay; we
+  hand off ground truth (is_mule_hop, complaint linkage) and let the delay be expressed via
   complaints.filed_at, not by mutating transactions.
 """
 from __future__ import annotations
@@ -261,9 +261,9 @@ def generate(cfg: SimConfig, terminals: pd.DataFrame) -> GenResult:
                 window_start = ts.floor("2h")
                 label_windows_pos.add((tid, window_start))
         # if dropped by false negative: transactions still exist (is_mule_hop=True ground
-        # truth preserved) but no complaint row is filed, so Model agent's label join yields 0
-        # for that ring's windows unless another ring also hits the same window -> correctly
-        # simulates a missed real-world detection.
+        # truth preserved) but no complaint row is filed, so the feature/label join in
+        # model/features.py yields 0 for that ring's windows unless another ring also hits
+        # the same window -> correctly simulates a missed real-world detection.
 
     # ---------------- false positive complaints (innocent accounts misattributed) ----------------
     n_fp = int(round(n_complaints * noise["false_positive_rate"]))
@@ -283,8 +283,9 @@ def generate(cfg: SimConfig, terminals: pd.DataFrame) -> GenResult:
         # here, since the innocent account never made a mule-hop withdrawal -- consumers of
         # ground truth should join complaints -> is_mule_hop transactions only, so this FP
         # complaint correctly contributes no positive label but does add label *noise* at the
-        # complaint level (an accusation with no matching transaction), which the Model agent's
-        # feature/label build should be aware of when deriving account-level suspicion features.
+        # complaint level (an accusation with no matching transaction), which the
+        # feature/label build (model/features.py) should account for when deriving
+        # account-level suspicion features.
 
     # ---------------- benign background transactions ----------------
     benign_rows = []

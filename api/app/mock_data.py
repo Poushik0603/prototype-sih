@@ -1,7 +1,7 @@
 """
 Mock ranked-terminal data generator.
 
-Fabricates plausible ranked-terminal JSON objects matching the SCHEMA_CONTRACT.md
+Fabricates plausible ranked-terminal JSON objects matching the docs/DATA_SCHEMA.md
 "model output / API response" shape, so the API + UI can be built and tested
 end-to-end before model/predict.py exists.
 
