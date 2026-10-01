@@ -3,7 +3,7 @@ numpy
 pyarrow
 scikit-learn
 xgboost
-shap
+shap>=0.50
 networkx
 h3
 geopandas

@@ -1,0 +1,25 @@
+{
+  "config": "A",
+  "feature_cols": [
+    "txn_count_2h",
+    "txn_amount_sum_2h",
+    "txn_count_6h",
+    "txn_amount_sum_6h",
+    "txn_count_24h",
+    "txn_amount_sum_24h",
+    "txn_count_168h",
+    "txn_amount_sum_168h",
+    "past_hotspot_freq",
+    "complaint_density_kring",
+    "graph_dist_to_known_mule"
+  ],
+  "seed": 42,
+  "best_params": {
+    "max_depth": 4,
+    "learning_rate": 0.05
+  },
+  "n_train": 57500,
+  "n_val": 14950,
+  "n_test": 24150,
+  "train_label_rate": 0.002539130434782609
+}
