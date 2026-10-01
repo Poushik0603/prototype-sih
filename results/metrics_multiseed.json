@@ -1,0 +1,901 @@
+{
+  "n_seeds": 5,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "train_config": "A",
+  "per_seed_tuned_params": [
+    {
+      "max_depth": 4,
+      "learning_rate": 0.05
+    },
+    {
+      "max_depth": 4,
+      "learning_rate": 0.05
+    },
+    {
+      "max_depth": 4,
+      "learning_rate": 0.05
+    },
+    {
+      "max_depth": 3,
+      "learning_rate": 0.1
+    },
+    {
+      "max_depth": 3,
+      "learning_rate": 0.1
+    }
+  ],
+  "label": "SIMULATED DATA (synthetic simulator output, NOT real-world transactions)",
+  "note": "Model trained on config A's train split (tuned on val only, never test) with 5 different XGBoost random_state seeds; same feature table, same leak-free rolling-origin split as the single-seed results in results/metrics_config_*.json (features.py/split logic untouched). Config B/C use the FULL feature table as test (never trained/tuned on any row of B/C), consistent with evaluate.py's existing cross-config convention. pr_auc_trapezoidal (sklearn.metrics.auc on precision_recall_curve) is reported alongside average_precision (sklearn.metrics.average_precision_score) since these are different area estimators and can disagree, especially at this sub-1%-positive-rate scale.",
+  "config_A": {
+    "roc_auc": {
+      "mean": 0.5198863164882581,
+      "std": 0.027762742615598492,
+      "n": 5,
+      "values": [
+        0.5242541248305811,
+        0.477026024811219,
+        0.5432787389704865,
+        0.5532874173650872,
+        0.5015852764639173
+      ]
+    },
+    "average_precision": {
+      "mean": 0.0022696015596802436,
+      "std": 0.00038789105599897056,
+      "n": 5,
+      "values": [
+        0.002210150113148961,
+        0.0018794166419739478,
+        0.002157835653116727,
+        0.0030120606075303637,
+        0.002088544782631219
+      ]
+    },
+    "pr_auc_trapezoidal": {
+      "mean": 0.004272691810277731,
+      "std": 0.004134906806613894,
+      "n": 5,
+      "values": [
+        0.0021416900480171505,
+        0.0018309257690423161,
+        0.012513056478792412,
+        0.0028599862023147606,
+        0.002017800553222018
+      ]
+    },
+    "precision_at_5_per_window_mean": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "precision_at_10_per_window_mean": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "precision_at_20_per_window_mean": {
+      "mean": 0.001904761904761905,
+      "std": 0.0023328473740792176,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.004761904761904762,
+        0.004761904761904762
+      ]
+    },
+    "precision_at_5_per_window_mean_on_positive_windows": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "precision_at_10_per_window_mean_on_positive_windows": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "precision_at_20_per_window_mean_on_positive_windows": {
+      "mean": 0.002105263157894737,
+      "std": 0.0025784102555612403,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.005263157894736842,
+        0.005263157894736842
+      ]
+    },
+    "recall_at_10_per_window_mean": {
+      "mean": 0.0,
+      "std": 0.0,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "recall_at_20_per_window_mean": {
+      "mean": 0.023157894736842106,
+      "std": 0.031332370665552035,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.03684210526315789,
+        0.07894736842105263
+      ]
+    },
+    "n_rows": 24150,
+    "n_positive": 48,
+    "per_seed_raw": [
+      {
+        "roc_auc": 0.5242541248305811,
+        "average_precision": 0.002210150113148961,
+        "pr_auc_trapezoidal": 0.0021416900480171505,
+        "differ_by": 6.846006513181032e-05,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.0,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.0,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      {
+        "roc_auc": 0.477026024811219,
+        "average_precision": 0.0018794166419739478,
+        "pr_auc_trapezoidal": 0.0018309257690423161,
+        "differ_by": 4.84908729316317e-05,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.0,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.0,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      {
+        "roc_auc": 0.5432787389704865,
+        "average_precision": 0.002157835653116727,
+        "pr_auc_trapezoidal": 0.012513056478792412,
+        "differ_by": 0.010355220825675686,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.0,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.0,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      {
+        "roc_auc": 0.5532874173650872,
+        "average_precision": 0.0030120606075303637,
+        "pr_auc_trapezoidal": 0.0028599862023147606,
+        "differ_by": 0.00015207440521560313,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.004761904761904762,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.005263157894736842,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.03684210526315789,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      {
+        "roc_auc": 0.5015852764639173,
+        "average_precision": 0.002088544782631219,
+        "pr_auc_trapezoidal": 0.002017800553222018,
+        "differ_by": 7.074422940920103e-05,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.004761904761904762,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.005263157894736842,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.07894736842105263,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      }
+    ]
+  },
+  "config_B": {
+    "roc_auc": {
+      "mean": 0.3985849219397545,
+      "std": 0.007244288513436803,
+      "n": 5,
+      "values": [
+        0.39062562692732417,
+        0.40922300922373106,
+        0.3911713612114269,
+        0.39781308625462386,
+        0.4040915260816661
+      ]
+    },
+    "average_precision": {
+      "mean": 0.0007833068199766116,
+      "std": 1.4969686215744191e-05,
+      "n": 5,
+      "values": [
+        0.0007706408213140196,
+        0.0007808987583896393,
+        0.0007641681668153696,
+        0.0007992537975441841,
+        0.0008015725558198454
+      ]
+    },
+    "pr_auc_trapezoidal": {
+      "mean": 0.001909724821659508,
+      "std": 0.0012359825402759094,
+      "n": 5,
+      "values": [
+        0.0018990127061964987,
+        0.00416462945078491,
+        0.0007617584066389109,
+        0.0019250262928200402,
+        0.0007981972518571795
+      ]
+    },
+    "precision_at_5_per_window_mean": {
+      "mean": 0.0006417112299465242,
+      "std": 0.0006236312187000322,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0010695187165775401,
+        0.0,
+        0.0005347593582887701,
+        0.0016042780748663104
+      ]
+    },
+    "precision_at_10_per_window_mean": {
+      "mean": 0.0006417112299465241,
+      "std": 0.0004001772606175338,
+      "n": 5,
+      "values": [
+        0.00026737967914438503,
+        0.0005347593582887701,
+        0.00026737967914438503,
+        0.0008021390374331552,
+        0.001336898395721925
+      ]
+    },
+    "precision_at_20_per_window_mean": {
+      "mean": 0.0009358288770053477,
+      "std": 0.00018906598427447796,
+      "n": 5,
+      "values": [
+        0.0006684491978609625,
+        0.0008021390374331552,
+        0.0010695187165775401,
+        0.0009358288770053476,
+        0.0012032085561497327
+      ]
+    },
+    "precision_at_5_per_window_mean_on_positive_windows": {
+      "mean": 0.0011594202898550724,
+      "std": 0.0011267539893420873,
+      "n": 5,
+      "values": [
+        0.0,
+        0.0019323671497584543,
+        0.0,
+        0.0009661835748792271,
+        0.0028985507246376816
+      ]
+    },
+    "precision_at_10_per_window_mean_on_positive_windows": {
+      "mean": 0.0011594202898550724,
+      "std": 0.0007230255819853026,
+      "n": 5,
+      "values": [
+        0.00048309178743961357,
+        0.0009661835748792271,
+        0.00048309178743961357,
+        0.0014492753623188408,
+        0.0024154589371980675
+      ]
+    },
+    "precision_at_20_per_window_mean_on_positive_windows": {
+      "mean": 0.0016908212560386472,
+      "std": 0.00034159747883408096,
+      "n": 5,
+      "values": [
+        0.0012077294685990338,
+        0.0014492753623188408,
+        0.0019323671497584543,
+        0.0016908212560386474,
+        0.002173913043478261
+      ]
+    },
+    "recall_at_10_per_window_mean": {
+      "mean": 0.007761674718196457,
+      "std": 0.005897898081599153,
+      "n": 5,
+      "values": [
+        0.0009661835748792271,
+        0.006038647342995169,
+        0.004830917874396135,
+        0.008454106280193236,
+        0.018518518518518517
+      ]
+    },
+    "recall_at_20_per_window_mean": {
+      "mean": 0.01895330112721417,
+      "std": 0.0063360168128092425,
+      "n": 5,
+      "values": [
+        0.012238325281803542,
+        0.012077294685990338,
+        0.023752012882447663,
+        0.018518518518518517,
+        0.02818035426731079
+      ]
+    },
+    "n_rows": 430100,
+    "n_positive": 443,
+    "per_seed_raw": [
+      {
+        "roc_auc": 0.39062562692732417,
+        "average_precision": 0.0007706408213140196,
+        "pr_auc_trapezoidal": 0.0018990127061964987,
+        "differ_by": 0.0011283718848824791,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.00026737967914438503,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.00048309178743961357,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0006684491978609625,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0012077294685990338,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.0009661835748792271,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.012238325281803542,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      {
+        "roc_auc": 0.40922300922373106,
+        "average_precision": 0.0007808987583896393,
+        "pr_auc_trapezoidal": 0.00416462945078491,
+        "differ_by": 0.0033837306923952706,
+        "precision_at_5_per_window_mean": 0.0010695187165775401,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0019323671497584543,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.0005347593582887701,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0009661835748792271,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0008021390374331552,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0014492753623188408,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.006038647342995169,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.012077294685990338,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      {
+        "roc_auc": 0.3911713612114269,
+        "average_precision": 0.0007641681668153696,
+        "pr_auc_trapezoidal": 0.0007617584066389109,
+        "differ_by": 2.4097601764587646e-06,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.00026737967914438503,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.00048309178743961357,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0010695187165775401,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0019323671497584543,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.004830917874396135,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.023752012882447663,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      {
+        "roc_auc": 0.39781308625462386,
+        "average_precision": 0.0007992537975441841,
+        "pr_auc_trapezoidal": 0.0019250262928200402,
+        "differ_by": 0.001125772495275856,
+        "precision_at_5_per_window_mean": 0.0005347593582887701,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0009661835748792271,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.0008021390374331552,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0014492753623188408,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0009358288770053476,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0016908212560386474,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.008454106280193236,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.018518518518518517,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      {
+        "roc_auc": 0.4040915260816661,
+        "average_precision": 0.0008015725558198454,
+        "pr_auc_trapezoidal": 0.0007981972518571795,
+        "differ_by": 3.375303962665924e-06,
+        "precision_at_5_per_window_mean": 0.0016042780748663104,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0028985507246376816,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.001336898395721925,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0024154589371980675,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0012032085561497327,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.002173913043478261,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.018518518518518517,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.02818035426731079,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      }
+    ]
+  },
+  "config_C": {
+    "roc_auc": {
+      "mean": 0.5070211625975638,
+      "std": 0.0029496533071739976,
+      "n": 5,
+      "values": [
+        0.5031149565381436,
+        0.5119810615560321,
+        0.5078609052417546,
+        0.5053176380741661,
+        0.5068312515777228
+      ]
+    },
+    "average_precision": {
+      "mean": 0.002866283712329487,
+      "std": 3.620804861233516e-05,
+      "n": 5,
+      "values": [
+        0.002833397940380104,
+        0.002927935784681342,
+        0.0028683754351706294,
+        0.002875269632572065,
+        0.0028264397688432955
+      ]
+    },
+    "pr_auc_trapezoidal": {
+      "mean": 0.0028452606542302356,
+      "std": 3.2576864044571156e-05,
+      "n": 5,
+      "values": [
+        0.0028152505894330606,
+        0.0029013655711836337,
+        0.002852895225121344,
+        0.0028461550389275152,
+        0.0028106368464856225
+      ]
+    },
+    "precision_at_5_per_window_mean": {
+      "mean": 0.0026190476190476194,
+      "std": 0.0013883218797250717,
+      "n": 5,
+      "values": [
+        0.0035714285714285718,
+        0.0011904761904761906,
+        0.004761904761904762,
+        0.002380952380952381,
+        0.0011904761904761906
+      ]
+    },
+    "precision_at_10_per_window_mean": {
+      "mean": 0.0029761904761904765,
+      "std": 0.0008417937871268424,
+      "n": 5,
+      "values": [
+        0.002380952380952381,
+        0.002976190476190476,
+        0.0041666666666666675,
+        0.0035714285714285713,
+        0.0017857142857142859
+      ]
+    },
+    "precision_at_20_per_window_mean": {
+      "mean": 0.0030952380952380953,
+      "std": 0.0005189165408976994,
+      "n": 5,
+      "values": [
+        0.003273809523809524,
+        0.003273809523809524,
+        0.0035714285714285718,
+        0.003273809523809524,
+        0.0020833333333333333
+      ]
+    },
+    "precision_at_5_per_window_mean_on_positive_windows": {
+      "mean": 0.002784810126582279,
+      "std": 0.0014761903531253925,
+      "n": 5,
+      "values": [
+        0.0037974683544303805,
+        0.0012658227848101266,
+        0.005063291139240506,
+        0.002531645569620253,
+        0.0012658227848101266
+      ]
+    },
+    "precision_at_10_per_window_mean_on_positive_windows": {
+      "mean": 0.003164556962025317,
+      "std": 0.0008950718749196803,
+      "n": 5,
+      "values": [
+        0.002531645569620253,
+        0.0031645569620253164,
+        0.004430379746835443,
+        0.0037974683544303796,
+        0.0018987341772151902
+      ]
+    },
+    "precision_at_20_per_window_mean_on_positive_windows": {
+      "mean": 0.00329113924050633,
+      "std": 0.0005517593599418578,
+      "n": 5,
+      "values": [
+        0.003481012658227849,
+        0.0034810126582278484,
+        0.0037974683544303805,
+        0.0034810126582278484,
+        0.002215189873417721
+      ]
+    },
+    "recall_at_10_per_window_mean": {
+      "mean": 0.009697106690777575,
+      "std": 0.0031505689875864534,
+      "n": 5,
+      "values": [
+        0.00680379746835443,
+        0.009177215189873418,
+        0.014300783604581072,
+        0.01219107896323086,
+        0.006012658227848101
+      ]
+    },
+    "recall_at_20_per_window_mean": {
+      "mean": 0.01990204942736588,
+      "std": 0.003562278611953981,
+      "n": 5,
+      "values": [
+        0.017412597950572633,
+        0.020313441832429176,
+        0.02590415913200723,
+        0.020524412296564192,
+        0.015355635925256177
+      ]
+    },
+    "n_rows": 193200,
+    "n_positive": 537,
+    "per_seed_raw": [
+      {
+        "roc_auc": 0.5031149565381436,
+        "average_precision": 0.002833397940380104,
+        "pr_auc_trapezoidal": 0.0028152505894330606,
+        "differ_by": 1.8147350947043603e-05,
+        "precision_at_5_per_window_mean": 0.0035714285714285718,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0037974683544303805,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.002380952380952381,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.002531645569620253,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.003273809523809524,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.003481012658227849,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.00680379746835443,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.017412597950572633,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      {
+        "roc_auc": 0.5119810615560321,
+        "average_precision": 0.002927935784681342,
+        "pr_auc_trapezoidal": 0.0029013655711836337,
+        "differ_by": 2.6570213497708293e-05,
+        "precision_at_5_per_window_mean": 0.0011904761904761906,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0012658227848101266,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.002976190476190476,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0031645569620253164,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.003273809523809524,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0034810126582278484,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.009177215189873418,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.020313441832429176,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      {
+        "roc_auc": 0.5078609052417546,
+        "average_precision": 0.0028683754351706294,
+        "pr_auc_trapezoidal": 0.002852895225121344,
+        "differ_by": 1.5480210049285265e-05,
+        "precision_at_5_per_window_mean": 0.004761904761904762,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.005063291139240506,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.0041666666666666675,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.004430379746835443,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.0035714285714285718,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0037974683544303805,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.014300783604581072,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.02590415913200723,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      {
+        "roc_auc": 0.5053176380741661,
+        "average_precision": 0.002875269632572065,
+        "pr_auc_trapezoidal": 0.0028461550389275152,
+        "differ_by": 2.911459364454954e-05,
+        "precision_at_5_per_window_mean": 0.002380952380952381,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.002531645569620253,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.0035714285714285713,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0037974683544303796,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.003273809523809524,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0034810126582278484,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.01219107896323086,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.020524412296564192,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      {
+        "roc_auc": 0.5068312515777228,
+        "average_precision": 0.0028264397688432955,
+        "pr_auc_trapezoidal": 0.0028106368464856225,
+        "differ_by": 1.5802922357672968e-05,
+        "precision_at_5_per_window_mean": 0.0011904761904761906,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0012658227848101266,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.0017857142857142859,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0018987341772151902,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.0020833333333333333,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.002215189873417721,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.006012658227848101,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.015355635925256177,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      }
+    ]
+  },
+  "baselines": {
+    "A": {
+      "past_hotspot_freq": {
+        "roc_auc": 0.4861193227394684,
+        "average_precision": 0.0018802658867336135,
+        "pr_auc_trapezoidal": 0.012234257714025535,
+        "differ_by": 0.010353991827291922,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.0,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.0,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      "rule_only": {
+        "roc_auc": 0.4559303515614196,
+        "average_precision": 0.001863699860748194,
+        "pr_auc_trapezoidal": 0.001803464270322607,
+        "differ_by": 6.023559042558696e-05,
+        "precision_at_5_per_window_mean": 0.0,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k5": 19,
+        "precision_at_10_per_window_mean": 0.0,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0,
+        "n_windows_with_positive_for_k10": 19,
+        "precision_at_20_per_window_mean": 0.002380952380952381,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.002631578947368421,
+        "n_windows_with_positive_for_k20": 19,
+        "recall_at_10_per_window_mean": 0.0,
+        "recall_at_10_n_windows_with_positive": 19,
+        "recall_at_20_per_window_mean": 0.017543859649122806,
+        "recall_at_20_n_windows_with_positive": 19,
+        "n_rows": 24150,
+        "n_positive": 48
+      },
+      "deterministic_note": "past_hotspot_baseline and rule_only_baseline contain no random-number generation (verified by code inspection of model/baselines.py: no np.random/random calls) and depend only on the fixed feature table / raw tables for this config, so they produce bit-identical output on every run regardless of the model's training seed. Reported as a single value per metric (std=0, not fabricated across pseudo-seeds)."
+    },
+    "B": {
+      "past_hotspot_freq": {
+        "roc_auc": 0.4916904634060794,
+        "average_precision": 0.001098854048142268,
+        "pr_auc_trapezoidal": 0.001057972735119,
+        "differ_by": 4.0881313023267887e-05,
+        "precision_at_5_per_window_mean": 0.0010695187165775401,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0019323671497584543,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.0005347593582887701,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0009661835748792271,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0006684491978609625,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0012077294685990338,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.00644122383252818,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.012077294685990338,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      "rule_only": {
+        "roc_auc": 0.44567435704172464,
+        "average_precision": 0.0010921903141585076,
+        "pr_auc_trapezoidal": 0.0010797974742155498,
+        "differ_by": 1.239283994295781e-05,
+        "precision_at_5_per_window_mean": 0.0010695187165775401,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0019323671497584543,
+        "n_windows_with_positive_for_k5": 207,
+        "precision_at_10_per_window_mean": 0.0016042780748663102,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0028985507246376816,
+        "n_windows_with_positive_for_k10": 207,
+        "precision_at_20_per_window_mean": 0.0012032085561497327,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.002173913043478261,
+        "n_windows_with_positive_for_k20": 207,
+        "recall_at_10_per_window_mean": 0.01570048309178744,
+        "recall_at_10_n_windows_with_positive": 207,
+        "recall_at_20_per_window_mean": 0.027777777777777776,
+        "recall_at_20_n_windows_with_positive": 207,
+        "n_rows": 430100,
+        "n_positive": 443
+      },
+      "deterministic_note": "past_hotspot_baseline and rule_only_baseline contain no random-number generation (verified by code inspection of model/baselines.py: no np.random/random calls) and depend only on the fixed feature table / raw tables for this config, so they produce bit-identical output on every run regardless of the model's training seed. Reported as a single value per metric (std=0, not fabricated across pseudo-seeds)."
+    },
+    "C": {
+      "past_hotspot_freq": {
+        "roc_auc": 0.5097183036799979,
+        "average_precision": 0.0028717840304564187,
+        "pr_auc_trapezoidal": 0.0029562740437324864,
+        "differ_by": 8.449001327606774e-05,
+        "precision_at_5_per_window_mean": 0.0011904761904761906,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.0012658227848101266,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.0035714285714285718,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0037974683544303805,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.003273809523809524,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.0034810126582278484,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.01181434599156118,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.020840867992766725,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      "rule_only": {
+        "roc_auc": 0.5,
+        "average_precision": 0.0027795031055900623,
+        "pr_auc_trapezoidal": 0.5013897515527951,
+        "differ_by": 0.49861024844720503,
+        "precision_at_5_per_window_mean": 0.005952380952380952,
+        "precision_at_5_per_window_mean_on_positive_windows": 0.006329113924050633,
+        "n_windows_with_positive_for_k5": 158,
+        "precision_at_10_per_window_mean": 0.002976190476190476,
+        "precision_at_10_per_window_mean_on_positive_windows": 0.0031645569620253164,
+        "n_windows_with_positive_for_k10": 158,
+        "precision_at_20_per_window_mean": 0.002678571428571429,
+        "precision_at_20_per_window_mean_on_positive_windows": 0.002848101265822785,
+        "n_windows_with_positive_for_k20": 158,
+        "recall_at_10_per_window_mean": 0.014451476793248945,
+        "recall_at_10_n_windows_with_positive": 158,
+        "recall_at_20_per_window_mean": 0.02295057263411694,
+        "recall_at_20_n_windows_with_positive": 158,
+        "n_rows": 193200,
+        "n_positive": 537
+      },
+      "deterministic_note": "past_hotspot_baseline and rule_only_baseline contain no random-number generation (verified by code inspection of model/baselines.py: no np.random/random calls) and depend only on the fixed feature table / raw tables for this config, so they produce bit-identical output on every run regardless of the model's training seed. Reported as a single value per metric (std=0, not fabricated across pseudo-seeds)."
+    }
+  }
+}
